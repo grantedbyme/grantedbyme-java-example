@@ -1,0 +1,30 @@
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+    <servlet>
+        <servlet-name>Ajax</servlet-name>
+        <servlet-class>com.grantedbyme.example.ServletAjax</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Callback</servlet-name>
+        <servlet-class>com.grantedbyme.example.ServletCallback</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Activate</servlet-name>
+        <servlet-class>com.grantedbyme.example.ServletActivate</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Ajax</servlet-name>
+        <url-pattern>/ajax</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Callback</servlet-name>
+        <url-pattern>/callback</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Activate</servlet-name>
+        <url-pattern>/activate</url-pattern>
+    </servlet-mapping>
+</web-app>
