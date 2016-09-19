@@ -73,24 +73,24 @@ public class ServletAjax extends HttpServlet {
             GrantedByMe sdk = ServletUtils.getSDK(this);
             //sdk.setDebugMode(true);
             // process operation
-            String token = null;
+            String challenge = null;
             if (operation.equals("getRegisterToken")) {
-                result = sdk.getRegisterToken();
+                result = sdk.getChallenge(GrantedByMe.TOKEN_REGISTER);
             } else if (operation.equals("getRegisterState")) {
-                token = request.getParameter("token");
-                result = sdk.getTokenState(token);
-                handleGetRegisterState(result, token, sdk);
+                challenge = request.getParameter("challenge");
+                result = sdk.getChallengeState(challenge);
+                handleGetRegisterState(result, challenge, sdk);
             } else if (operation.equals("getAccountToken")) {
-                result = sdk.getAccountToken();
+                result = sdk.getChallenge(GrantedByMe.TOKEN_ACCOUNT);
             } else if (operation.equals("getAccountState")) {
-                token = request.getParameter("token");
-                result = sdk.getTokenState(token);
-                handleGetAccountState(result, token, sdk);
+                challenge = request.getParameter("challenge");
+                result = sdk.getChallengeState(challenge);
+                handleGetAccountState(result, challenge, sdk);
             } else if (operation.equals("getSessionToken")) {
-                result = sdk.getSessionToken();
+                result = sdk.getChallenge(GrantedByMe.TOKEN_AUTHENTICATE);
             } else if (operation.equals("getSessionState")) {
-                token = request.getParameter("token");
-                result = sdk.getTokenState(token);
+                challenge = request.getParameter("challenge");
+                result = sdk.getChallengeState(challenge);
                 handleGetSessionState(result);
             }
         }
@@ -107,17 +107,17 @@ public class ServletAjax extends HttpServlet {
         LogManager.getRootLogger().info("[ServletAjax]: " + message);
     }
 
-    private void handleGetRegisterState(JSONObject result, String token, GrantedByMe sdk) {
+    private void handleGetRegisterState(JSONObject result, String challenge, GrantedByMe sdk) {
         Boolean isSuccess = (Boolean) result.get("success");
         if (isSuccess) {
             Long status = (Long) result.get("status");
             _log("status: " + Long.toString(status));
             // wait until scanned QR code
             if (status == GrantedByMe.STATUS_VALIDATED) {
-                // generate grantor used by GBM service for authentication
-                String grantor = CryptoUtil.hexFromBytes(CryptoUtil.randomBytes(64));
-                // link current QR token with grantor
-                JSONObject linkResult = sdk.linkAccount(token, grantor);
+                // generate authenticator_secret used by GBM service for authentication
+                String authenticator_secret = GrantedByMe.generateAuthenticatorSecret();
+                // link challenge with authenticator_secret
+                JSONObject linkResult = sdk.linkAccount(challenge, authenticator_secret);
                 // process link result
                 Boolean isLinkSuccess = (Boolean) linkResult.get("success");
                 if (isLinkSuccess) {
@@ -130,7 +130,7 @@ public class ServletAjax extends HttpServlet {
                         _log("email: " + email);
                         _log("first_name: " + first_name);
                         _log("last_name: " + last_name);
-                        // TODO: register user with grantor and profile data
+                        // TODO: register user with authenticator_secret and profile data
                     }
                 } else {
                     Long linkError = (Long) linkResult.get("error");
@@ -143,21 +143,21 @@ public class ServletAjax extends HttpServlet {
         }
     }
 
-    private void handleGetAccountState(JSONObject result, String token, GrantedByMe sdk) {
+    private void handleGetAccountState(JSONObject result, String challenge, GrantedByMe sdk) {
         Boolean isSuccess = (Boolean) result.get("success");
         if (isSuccess) {
             Long status = (Long) result.get("status");
             _log("status: " + Long.toString(status));
             // wait until scanned QR code
             if (status == GrantedByMe.STATUS_VALIDATED) {
-                // generate grantor used by GBM service for authentication
-                String grantor = CryptoUtil.hexFromBytes(CryptoUtil.randomBytes(64));
-                // link current QR token with grantor
-                JSONObject linkResult = sdk.linkAccount(token, grantor);
+                // generate authenticator_secret used by GBM service for authentication
+                String authenticator_secret = GrantedByMe.generateAuthenticatorSecret();
+                // link current challenge with authenticator_secret
+                JSONObject linkResult = sdk.linkAccount(challenge, authenticator_secret);
                 // process link result
                 Boolean isLinkSuccess = (Boolean) linkResult.get("success");
                 if (isLinkSuccess) {
-                    // TODO: link grantor with current logged-in user id
+                    // TODO: link authenticator_secret with current logged-in user id
                 } else {
                     Long linkError = (Long) linkResult.get("error");
                     _log("linkError: " + Long.toString(linkError));
@@ -176,8 +176,8 @@ public class ServletAjax extends HttpServlet {
             _log("status: " + Long.toString(status));
             // wait until scanned QR code
             if (status == GrantedByMe.STATUS_VALIDATED) {
-                String grantor = (String) result.get("grantor");
-                // TODO: login user by grantor token
+                String authenticator_secret = (String) result.get("authenticator_secret");
+                // TODO: login user by authenticator_secret
             }
         } else {
             Long error = (Long) result.get("error");

@@ -9,15 +9,28 @@
     <meta name="description" content="GrantedByMe - Instant secure login without password">
     <meta name="author" content="grantedby.me">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            margin: 10px;
+        }
+        #container {
+            text-align: center;
+        }
+        #GrantedByMe-Container {
+            padding: 10px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js" integrity="sha384-6ePHh72Rl3hKio4HiJ841psfsRJveeS+aLoaEf3BWfS+gTF0XdAqku2ka8VddikM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 <body>
-<form action="/example/activate" id="activate_form" method="post">
-  <textarea name="api_key_input" form="activate_form" placeholder="Enter API key here..."></textarea>
-  <br>
-  <input type="submit">
-</form>
+<div id="container">
+    <form action="/example/activate" id="activate_form" method="post">
+      <textarea name="api_key_input" form="activate_form" placeholder="Enter API key here..."></textarea>
+      <br>
+      <input type="submit">
+    </form>
+</div>
 </body>
 </html>
 

@@ -56,8 +56,7 @@ public class ServletActivate extends HttpServlet {
         JSONObject result = null;
         // create sdk
         GrantedByMe sdk = ServletUtils.getSDK(this);
-        String grantor = CryptoUtil.hexFromBytes(CryptoUtil.randomBytes(64));
-        sdk.activateService(request.getParameter("api_key_input"), grantor);
+        sdk.activateService(request.getParameter("api_key_input"));
         // write out response
         PrintWriter out = response.getWriter();
         out.print(new JSONObject(resultHashMap).toJSONString());

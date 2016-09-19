@@ -98,18 +98,14 @@ public class ServletCallback extends HttpServlet {
                     String operation = (String) requestJSON.get("operation");
                     if(operation.equals("ping")) {
                         resultHashMap.put("success", true);
-                    } else if(operation.equals("deactivate_service")){
-                        // TODO: implement
-                        resultHashMap.put("success", false);
-                    } else if(operation.equals("rekey_service")){
-                        // TODO: implement
-                        resultHashMap.put("success", false);
-                    } else if(operation.equals("deactivate_account")){
+                    } else if(operation.equals("unlink_account")){
                         // TODO: implement
                         resultHashMap.put("success", false);
                     } else if(operation.equals("rekey_account")){
                         // TODO: implement
                         resultHashMap.put("success", false);
+                    } else {
+                        // operation not handled
                     }
                 }
             }
