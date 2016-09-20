@@ -27,24 +27,17 @@
  */
 package com.grantedbyme.example;
 
-import grantedbyme.CryptoUtil;
 import grantedbyme.GrantedByMe;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.apache.log4j.LogManager;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.lang.Long;
-import java.security.Security;
 
 public class ServletAjax extends HttpServlet {
 
@@ -75,19 +68,19 @@ public class ServletAjax extends HttpServlet {
             // process operation
             String challenge = null;
             if (operation.equals("getRegisterToken")) {
-                result = sdk.getChallenge(GrantedByMe.TOKEN_REGISTER);
+                result = sdk.getChallenge(GrantedByMe.CHALLENGE_PROFILE);
             } else if (operation.equals("getRegisterState")) {
                 challenge = request.getParameter("challenge");
                 result = sdk.getChallengeState(challenge);
                 handleGetRegisterState(result, challenge, sdk);
             } else if (operation.equals("getAccountToken")) {
-                result = sdk.getChallenge(GrantedByMe.TOKEN_ACCOUNT);
+                result = sdk.getChallenge(GrantedByMe.CHALLENGE_AUTHORIZE);
             } else if (operation.equals("getAccountState")) {
                 challenge = request.getParameter("challenge");
                 result = sdk.getChallengeState(challenge);
                 handleGetAccountState(result, challenge, sdk);
             } else if (operation.equals("getSessionToken")) {
-                result = sdk.getChallenge(GrantedByMe.TOKEN_AUTHENTICATE);
+                result = sdk.getChallenge(GrantedByMe.CHALLENGE_AUTHENTICATE);
             } else if (operation.equals("getSessionState")) {
                 challenge = request.getParameter("challenge");
                 result = sdk.getChallengeState(challenge);
