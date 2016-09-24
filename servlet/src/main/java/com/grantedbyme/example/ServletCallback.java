@@ -99,10 +99,19 @@ public class ServletCallback extends HttpServlet {
                     if(operation.equals("ping")) {
                         resultHashMap.put("success", true);
                     } else if(operation.equals("unlink_account")){
-                        // TODO: implement
+                        if(requestJSON.containsKey("authenticator_secret_hash")) {
+                            // TODO: implement
+                        }
                         resultHashMap.put("success", false);
                     } else if(operation.equals("rekey_account")){
-                        // TODO: implement
+                        if(requestJSON.containsKey("authenticator_secret_hash")) {
+                            // TODO: implement
+                        }
+                        resultHashMap.put("success", false);
+                    } else if(operation.equals("revoke_challenge")){
+                        if(requestJSON.containsKey("challenge")) {
+                            // TODO: implement
+                        }
                         resultHashMap.put("success", false);
                     } else {
                         // operation not handled
