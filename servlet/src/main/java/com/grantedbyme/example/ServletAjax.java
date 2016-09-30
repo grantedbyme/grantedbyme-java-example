@@ -37,6 +37,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.Integer;
 import java.lang.Long;
 
 public class ServletAjax extends HttpServlet {
@@ -53,6 +54,7 @@ public class ServletAjax extends HttpServlet {
         response.setContentType("application/json; charset=UTF-8");
 
         String operation = request.getParameter("operation");
+        int challengeType = Integer.valueOf(request.getParameter("challenge_type"));
         Boolean isSuccess = false;
         JSONObject result = null;
         JSONObject defaultResult = null;
@@ -67,24 +69,18 @@ public class ServletAjax extends HttpServlet {
             //sdk.setDebugMode(true);
             // process operation
             String challenge = null;
-            if (operation.equals("getRegisterToken")) {
-                result = sdk.getChallenge(GrantedByMe.CHALLENGE_PROFILE);
-            } else if (operation.equals("getRegisterState")) {
+            if (operation.equals("getChallenge")) {
+                result = sdk.getChallenge(challengeType);
+            } else if (operation.equals("getChallengeState")) {
                 challenge = request.getParameter("challenge");
                 result = sdk.getChallengeState(challenge);
-                handleGetRegisterState(result, challenge, sdk);
-            } else if (operation.equals("getAccountToken")) {
-                result = sdk.getChallenge(GrantedByMe.CHALLENGE_AUTHORIZE);
-            } else if (operation.equals("getAccountState")) {
-                challenge = request.getParameter("challenge");
-                result = sdk.getChallengeState(challenge);
-                handleGetAccountState(result, challenge, sdk);
-            } else if (operation.equals("getSessionToken")) {
-                result = sdk.getChallenge(GrantedByMe.CHALLENGE_AUTHENTICATE);
-            } else if (operation.equals("getSessionState")) {
-                challenge = request.getParameter("challenge");
-                result = sdk.getChallengeState(challenge);
-                handleGetSessionState(result);
+                if(challengeType == GrantedByMe.CHALLENGE_AUTHORIZE) {
+                    handleGetAccountState(result, challenge, sdk);
+                } else if(challengeType == GrantedByMe.CHALLENGE_AUTHENTICATE) {
+                    handleGetSessionState(result);
+                } else if(challengeType == GrantedByMe.CHALLENGE_PROFILE) {
+                    handleGetRegisterState(result, challenge, sdk);
+                }
             }
         }
         if (result == null) {

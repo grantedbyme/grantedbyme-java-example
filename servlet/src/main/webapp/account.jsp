@@ -13,9 +13,7 @@
             ajaxURL: 'ajax',
             redirectURL: '/example',
             csrfHeader: 'X-XSRF-TOKEN',
-            postToken: '',
-            initCall: 'getAccountToken',
-            pollCall: 'getAccountState'
+            challengeType: 'authorize'
         };
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
